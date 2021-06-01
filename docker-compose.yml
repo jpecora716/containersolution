@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  web:
+    image: web:latest
+    build:
+      context: ./nginx-web-server
+      dockerfile: Dockerfile
+    hostname: web
+  nginx:
+    image: proxy:latest
+    build:
+      context: ./nginx-basic-auth-proxy
+      dockerfile: Dockerfile
+    hostname: proxy
+    volumes:
+      - ${PWD}/nginx-basic-auth-proxy/files/pan.crt:/etc/nginx/pan.crt
+      - ${PWD}/nginx-basic-auth-proxy/files/pan.key:/etc/nginx/pan.key
+    ports:
+      - 443:443
+      - 80:80
+    environment:
+      - BASIC_AUTH_USERNAME=panuser
+      - BASIC_AUTH_PASSWORD=panpass
+      - STATIC_TOKEN=OWCBTo9hW7buI1cOS022
+      - PROXY_PASS=http://web/

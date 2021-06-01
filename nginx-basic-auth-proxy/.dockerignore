@@ -1,0 +1,6 @@
+*
+!Dockerfile
+!files/run.sh
+!files/nginx.conf.tmpl
+!files/pam.crt
+!files/pam.key
